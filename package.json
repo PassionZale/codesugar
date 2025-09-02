@@ -1,8 +1,9 @@
 {
   "name": "codesugar_dev",
   "displayName": "Codesugar",
-  "description": "",
+  "description": "Generate commit messages from git diff using AI",
   "version": "0.0.1",
+  "icon": "assets/icons/icon.png",
   "engines": {
     "vscode": "^1.103.0"
   },
@@ -12,10 +13,42 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "menus": {
+      "scm/title": [
+        {
+          "command": "codesugar.generateGitCommitMessage",
+          "group": "navigation",
+          "when": "config.git.enabled && scmProvider == git && !codesugar.isGeneratingCommit"
+        },
+        {
+          "command": "codesugar.abortGitCommitMessage",
+          "group": "navigation",
+          "when": "config.git.enabled && scmProvider == git && codesugar.isGeneratingCommit"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "codesugar.generateGitCommitMessage",
+          "when": "config.git.enabled && scmProvider == git && !codesugar.isGeneratingCommit"
+        },
+        {
+          "command": "codesugar.abortGitCommitMessage",
+          "when": "config.git.enabled && scmProvider == git && codesugar.isGeneratingCommit"
+        }
+      ]
+    },
     "commands": [
       {
-        "command": "codesugar.helloWorld",
-        "title": "Hello World"
+        "command": "codesugar.generateGitCommitMessage",
+        "title": "Generate Commit Message with Codesugar",
+        "category": "Codesugar",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "codesugar.abortGitCommitMessage",
+        "title": "Generate Commit Message with Codesugar - Stop",
+        "category": "Codesugar",
+        "icon": "$(debug-stop)"
       }
     ]
   },
