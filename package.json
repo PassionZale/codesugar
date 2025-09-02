@@ -1,14 +1,29 @@
 {
-  "name": "codesugar_dev",
+  "name": "codesugar-dev",
   "displayName": "Codesugar",
   "description": "Generate commit messages from git diff using AI",
   "version": "0.0.1",
+  "private": true,
   "icon": "assets/icons/icon.png",
   "engines": {
     "vscode": "^1.103.0"
   },
+  "author": "Lei Zhang <whouu336699@gmail.com>",
+  "license": "MIT",
+  "publisher": "leizhang",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PassionZale/codesugar"
+  },
+  "homepage": "https://www.lovchun.com",
   "categories": [
-    "Other"
+    "AI",
+    "SCM Providers"
+  ],
+  "keywords": [
+    "codesugar",
+    "git",
+    "ai"
   ],
   "activationEvents": [],
   "main": "./dist/extension.js",
