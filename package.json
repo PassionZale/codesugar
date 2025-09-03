@@ -69,25 +69,13 @@
     "configuration": {
       "title": "Codesugar",
       "properties": {
-        "codesugar.aiProvider": {
-          "type": "string",
-          "enum": [
-            "openai",
-            "anthropic",
-            "google"
-          ],
-          "description": "服务提供商"
-        },
         "codesugar.apiKey": {
           "type": "string",
           "description": "API 密钥",
           "markdownDescription": "⚠️ **安全提示**: API密钥将被存储在VS Code设置中，请确保您信任此环境。"
         },
         "codesugar.baseUrl": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": "string",
           "description": "模型服务提供商的 Base URL",
           "markdownDescription": "用于代理或自定义API端点。如果留空，将使用默认的API地址。"
         },
@@ -122,16 +110,22 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.103.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
+    "@types/vscode": "^1.103.0",
     "@typescript-eslint/eslint-plugin": "^8.39.0",
     "@typescript-eslint/parser": "^8.39.0",
-    "eslint": "^9.32.0",
-    "esbuild": "^0.25.8",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^5.9.2",
     "@vscode/test-cli": "^0.0.11",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "esbuild": "^0.25.8",
+    "eslint": "^9.32.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.9.2"
+  },
+  "extensionDependencies": [
+    "vscode.git"
+  ],
+  "dependencies": {
+    "openai": "^5.18.1"
   }
 }

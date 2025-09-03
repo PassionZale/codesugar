@@ -2,7 +2,6 @@ import * as vscode from "vscode";
 import { GitCommitGenerator } from "./integrations/git/commit-message-generator";
 
 export function activate(context: vscode.ExtensionContext) {
-  // Register the generateGitCommitMessage command handler
   context.subscriptions.push(
     vscode.commands.registerCommand(
       "codesugar.generateGitCommitMessage",
@@ -16,5 +15,4 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}
