@@ -65,7 +65,47 @@
         "category": "Codesugar",
         "icon": "$(debug-stop)"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Codesugar",
+      "properties": {
+        "codesugar.aiProvider": {
+          "type": "string",
+          "enum": [
+            "openai",
+            "anthropic",
+            "google"
+          ],
+          "description": "服务提供商"
+        },
+        "codesugar.apiKey": {
+          "type": "string",
+          "description": "API 密钥",
+          "markdownDescription": "⚠️ **安全提示**: API密钥将被存储在VS Code设置中，请确保您信任此环境。"
+        },
+        "codesugar.baseUrl": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "模型服务提供商的 Base URL",
+          "markdownDescription": "用于代理或自定义API端点。如果留空，将使用默认的API地址。"
+        },
+        "codesugar.modelName": {
+          "type": "string",
+          "description": "模型名称"
+        },
+        "codesugar.language": {
+          "type": "string",
+          "enum": [
+            "zh-CN",
+            "en-US"
+          ],
+          "default": "zh-CN",
+          "description": "生成提交信息的语言，默认 zh-CN"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
