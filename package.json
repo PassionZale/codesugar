@@ -6,7 +6,7 @@
   "private": true,
   "icon": "assets/icons/icon.png",
   "engines": {
-    "vscode": "^1.103.0"
+    "vscode": "^1.84.0"
   },
   "author": "Lei Zhang <whouu336699@gmail.com>",
   "license": "MIT",
