@@ -61,7 +61,7 @@ async function generate(
       title: "Generating commit message...",
       cancellable: true,
     },
-    () => performCommitGeneration(context, gitDiff, inputBox)
+    () => performCommitGeneration(gitDiff, inputBox)
   );
 }
 
@@ -82,7 +82,7 @@ async function getWorkingState() {
       throw new Error("Git is not installed");
     }
 
-    const diff = await repository.diff(true);
+    const diff = await repository.diff();
 
     return diff.trim();
   } catch (error) {
@@ -100,11 +100,7 @@ function extractCommitMessage(str: string): string {
     .trim();
 }
 
-async function performCommitGeneration(
-  context: vscode.ExtensionContext,
-  gitDiff: string,
-  inputBox: any
-) {
+async function performCommitGeneration(gitDiff: string, inputBox: any) {
   try {
     vscode.commands.executeCommand(
       "setContext",
