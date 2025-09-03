@@ -4,6 +4,11 @@ All notable changes to the "codesugar" extension will be documented in this file
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.4] - 2025-09-03
+
+### Added
+- 调整 vscode version
+
 ## [0.0.3] - 2025-09-03
 
 ### Added
