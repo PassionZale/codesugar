@@ -4,12 +4,12 @@ All notable changes to the "codesugar" extension will be documented in this file
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [0.0.2]
+## [0.0.2] - 2025-09-03
 
 ### Added
 - 优化 `system prompt` 和 `user prompt`
 
-## [0.0.1] - 2025-09-03
+## [0.0.1] - 2025-09-01
 
 ### Added
 - 使用 OpenAI API 自动生成 Git 提交信息
