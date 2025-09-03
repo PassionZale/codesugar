@@ -5,6 +5,8 @@ export const GitCommitGenerator = {
   abort,
 };
 
+let commitGenerationAbortController: AbortController | undefined;
+
 async function delay(wait: number): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(() => {

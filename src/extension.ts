@@ -2,7 +2,6 @@ import * as vscode from "vscode";
 import { GitCommitGenerator } from "./integrations/git/commit-message-generator";
 
 export function activate(context: vscode.ExtensionContext) {
-	console.log('11111ƒ')
   // Register the generateGitCommitMessage command handler
   context.subscriptions.push(
     vscode.commands.registerCommand(
