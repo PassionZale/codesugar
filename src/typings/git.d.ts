@@ -6,6 +6,7 @@ import {
   Command,
   CancellationToken,
 } from "vscode";
+import { GitStatus } from "../integrations/git/commit-message-generator";
 export { ProviderResult } from "vscode";
 
 export interface Git {
@@ -78,30 +79,6 @@ export interface Remote {
   readonly isReadOnly: boolean;
 }
 
-export const enum Status {
-  INDEX_MODIFIED,
-  INDEX_ADDED,
-  INDEX_DELETED,
-  INDEX_RENAMED,
-  INDEX_COPIED,
-
-  MODIFIED,
-  DELETED,
-  UNTRACKED,
-  IGNORED,
-  INTENT_TO_ADD,
-  INTENT_TO_RENAME,
-  TYPE_CHANGED,
-
-  ADDED_BY_US,
-  ADDED_BY_THEM,
-  DELETED_BY_US,
-  DELETED_BY_THEM,
-  BOTH_ADDED,
-  BOTH_DELETED,
-  BOTH_MODIFIED,
-}
-
 export interface Change {
   /**
    * Returns either `originalUri` or `renameUri`, depending
@@ -111,7 +88,7 @@ export interface Change {
   readonly uri: Uri;
   readonly originalUri: Uri;
   readonly renameUri: Uri | undefined;
-  readonly status: Status;
+  readonly status: GitStatus;
 }
 
 export interface RepositoryState {

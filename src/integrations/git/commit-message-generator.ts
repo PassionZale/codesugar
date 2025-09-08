@@ -1,12 +1,36 @@
 import * as vscode from "vscode";
 import { ConfigProvider } from "../../core/ConfigProvider";
-import { GitExtension } from "../../typings/git";
+import { GitExtension, Repository } from "../../typings/git";
 import OpenAI from "openai";
 
 export const GitCommitGenerator = {
   generate,
   abort,
 };
+
+export enum GitStatus {
+  INDEX_MODIFIED,
+  INDEX_ADDED,
+  INDEX_DELETED,
+  INDEX_RENAMED,
+  INDEX_COPIED,
+
+  MODIFIED,
+  DELETED,
+  UNTRACKED,
+  IGNORED,
+  INTENT_TO_ADD,
+  INTENT_TO_RENAME,
+  TYPE_CHANGED,
+
+  ADDED_BY_US,
+  ADDED_BY_THEM,
+  DELETED_BY_US,
+  DELETED_BY_THEM,
+  BOTH_ADDED,
+  BOTH_DELETED,
+  BOTH_MODIFIED,
+}
 
 let commitGenerationAbortController: AbortController | undefined;
 
@@ -82,7 +106,16 @@ async function getWorkingState() {
       throw new Error("Git is not installed");
     }
 
-    const diff = await repository.diff();
+    let diffCached: string = "";
+    let untrackedDiff: string = "";
+
+    diffCached = await repository.diff(true);
+
+    if (!diffCached) {
+      untrackedDiff = await getUntrackedFilesDiff(repository);
+    }
+
+    const diff = diffCached || untrackedDiff;
 
     return diff.trim();
   } catch (error) {
@@ -90,6 +123,81 @@ async function getWorkingState() {
 
     return "";
   }
+}
+
+// 获取未跟踪文件的内容（模拟diff格式）
+async function getUntrackedFilesDiff(repository: Repository): Promise<string> {
+  let untrackedDiff = "";
+
+  // 获取工作目录中的所有变更
+  const workingTreeChanges = repository.state.workingTreeChanges;
+
+  // 过滤出未跟踪的文件
+  const untrackedFiles = workingTreeChanges.filter(
+    (change) => change.status === GitStatus.UNTRACKED
+  );
+
+  for (const change of untrackedFiles) {
+    try {
+      // 读取文件内容
+      const document = await vscode.workspace.openTextDocument(change.uri);
+      const content = document.getText();
+
+      // 生成类似 git diff 的格式
+      untrackedDiff += `diff --git a/${getRelativePath(
+        change.uri
+      )} b/${getRelativePath(change.uri)}\n`;
+      untrackedDiff += `new file mode 100644\n`;
+      untrackedDiff += `index 0000000..${generateFakeHash(content)}\n`;
+      untrackedDiff += `--- /dev/null\n`;
+      untrackedDiff += `+++ b/${getRelativePath(change.uri)}\n`;
+
+      // 添加文件内容（每行前加 + 号）
+      const lines = content.split("\n");
+      lines.forEach((line, index) => {
+        untrackedDiff += `+${line}\n`;
+      });
+
+      untrackedDiff += "\n";
+    } catch (error) {
+      console.error(
+        `Error reading untracked file ${change.uri.fsPath}:`,
+        error
+      );
+
+      // 如果无法读取文件内容，至少显示文件信息
+      untrackedDiff += `diff --git a/${getRelativePath(
+        change.uri
+      )} b/${getRelativePath(change.uri)}\n`;
+      untrackedDiff += `new file mode 100644\n`;
+      untrackedDiff += `--- /dev/null\n`;
+      untrackedDiff += `+++ b/${getRelativePath(change.uri)}\n`;
+      untrackedDiff += `@@ -0,0 +1 @@\n`;
+      untrackedDiff += `+[Binary file or read error]\n\n`;
+    }
+  }
+
+  return untrackedDiff;
+}
+
+// 获取相对于仓库根目录的路径
+function getRelativePath(uri: vscode.Uri): string {
+  const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
+  if (workspaceFolder) {
+    return vscode.workspace.asRelativePath(uri);
+  }
+  return uri.fsPath;
+}
+
+// 生成简单的哈希值（模拟git对象哈希）
+function generateFakeHash(content: string): string {
+  let hash = 0;
+  for (let i = 0; i < content.length; i++) {
+    const char = content.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // 转换为32位整数
+  }
+  return Math.abs(hash).toString(16).padStart(7, "0");
 }
 
 function extractCommitMessage(str: string): string {
