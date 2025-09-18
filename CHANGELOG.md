@@ -4,6 +4,9 @@ All notable changes to the "codesugar" extension will be documented in this file
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.0.6] - 2025-09-18
+- 增强 `prompt`
+
 ## [0.0.4] - 2025-09-03
 
 ### Added
