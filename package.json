@@ -2,7 +2,7 @@
   "name": "codesugar-dev",
   "displayName": "Codesugar",
   "description": "Generate commit messages from git diff using AI",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": true,
   "icon": "assets/icons/icon.png",
   "engines": {
