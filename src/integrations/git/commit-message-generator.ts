@@ -226,7 +226,7 @@ async function performCommitGeneration(gitDiff: string, inputBox: any) {
     });
 
     const systemPrompt =
-      "You are a helpful assistant that generates concise and descriptive git commit messages based on git diffs.";
+      "You are a helpful assistant that generates informative git commit messages based on git diffs output. Skip preamble and remove all backticks surrounding the commit message.";
 
     const truncatedDiff =
       gitDiff.length > 5000
@@ -236,12 +236,12 @@ async function performCommitGeneration(gitDiff: string, inputBox: any) {
     const userPrompt = `Based on the following git diff, generate a concise and descriptive commit message:
 ${truncatedDiff}
 The commit message should:
-1. Start with a short summary (50-72 characters)
-2. Use the imperative mood (e.g., "Add feature" not "Added feature")
-3. Describe what was changed and why
-4. Be clear and descriptive
-5. use ${config.language}
-Commit message:`;
+1. use **${config.language}** language
+2. Has a short title (50-72 characters)
+3. The commit message should adhere to the conventional commit format
+4. Describe what was changed and why
+5. Be clear and informative
+`;
 
     const stream = await client.chat.completions.create({
       model: config.modelName,
